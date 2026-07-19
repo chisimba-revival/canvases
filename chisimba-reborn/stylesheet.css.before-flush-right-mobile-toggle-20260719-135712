@@ -1,0 +1,947 @@
+/**
+ * Chisimba Reborn skin design system.
+ *
+ * Chisimba is the Chichewa name for the wooden framework used to construct a
+ * traditional African house. The visual system therefore treats the original
+ * Chisimba identity as structural rather than decorative: earth and timber
+ * colours establish the framework, ochre and gold provide energy, and blue
+ * supplies contrast and orientation.
+ *
+ * The skin defines reusable visual tokens and rendering behaviour. Individual
+ * canvases may override contextual presentation without replacing the skin.
+ */
+
+:root {
+    /*
+     * Chisimba Reborn colour system.
+     *
+     * Derived from the restrained blue, grey and white visual language of
+     * dkeats.com2. Semantic tokens are used by the shell and shared components
+     * so future canvases and modules inherit one coherent visual system.
+     */
+
+    /* Brand and interaction */
+    --chisimba-primary: #0084e7;
+    --chisimba-primary-hover: #006fc0;
+    --chisimba-primary-dark: #005b9f;
+    --chisimba-primary-soft: #e7f4fd;
+    --chisimba-focus: #0084e7;
+
+    /* Neutral surfaces */
+    --chisimba-page: #f5f6f7;
+    --chisimba-surface: #ffffff;
+    --chisimba-surface-muted: #ededed;
+    --chisimba-surface-subtle: #f8f9fa;
+
+    /* Text */
+    --chisimba-ink: #111111;
+    --chisimba-text: #444444;
+    --chisimba-text-muted: #666666;
+    --chisimba-text-inverse: #ffffff;
+
+    /* Borders and structure */
+    --chisimba-border: #dddddd;
+    --chisimba-border-strong: #cccccc;
+    --chisimba-charcoal: #444444;
+    --chisimba-grey-blue: #577f9b;
+
+    /* Semantic states */
+    --chisimba-success: #2e7d32;
+    --chisimba-warning: #9a6700;
+    --chisimba-danger: #b42318;
+    --chisimba-info: #006fc0;
+
+    /* Compatibility aliases retained during migration */
+    --chisimba-earth: var(--chisimba-grey-blue);
+    --chisimba-earth-dark: var(--chisimba-charcoal);
+    --chisimba-ochre: var(--chisimba-primary);
+    --chisimba-orange: var(--chisimba-primary-hover);
+    --chisimba-gold: var(--chisimba-primary-soft);
+    --chisimba-blue: var(--chisimba-primary);
+    --chisimba-blue-deep: var(--chisimba-primary-hover);
+    --chisimba-canvas: var(--chisimba-page);
+
+    --chisimba-shadow: 0 0.55rem 1.5rem rgba(17, 17, 17, 0.10);
+
+    --chisimba-content-max-width: 92rem;
+    --chisimba-layout-gap: clamp(0.85rem, 1.8vw, 1.5rem);
+    --chisimba-region-padding: clamp(1rem, 2vw, 1.5rem);
+    --chisimba-region-radius: 0.7rem;
+    --chisimba-sidebar-width: minmax(17rem, 24rem);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    color: var(--chisimba-ink);
+    background: var(--chisimba-page);
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    line-height: 1.55;
+}
+
+body {
+    margin: 0;
+    color: var(--chisimba-ink);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(190, 121, 47, 0.09) 0,
+            rgba(246, 241, 237, 0) 18rem
+        ),
+        var(--chisimba-page);
+}
+
+a {
+    color: var(--chisimba-blue-deep);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--chisimba-orange);
+}
+
+img {
+    height: auto;
+}
+
+/**
+ * Main Chisimba header.
+ *
+ * The original framework symbol remains intact. It is presented cleanly and
+ * at a useful size rather than being redrawn or visually reinterpreted.
+ */
+#Canvas_Content_Head,
+.Canvas_Content_Head {
+    position: relative;
+    min-height: 7.25rem;
+    color: var(--chisimba-text-inverse);
+    background:
+        linear-gradient(
+            105deg,
+            var(--chisimba-earth-dark) 0%,
+            var(--chisimba-earth) 50%,
+            var(--chisimba-ochre) 100%
+        );
+    border-bottom: 0.35rem solid var(--chisimba-gold);
+    box-shadow: var(--chisimba-shadow);
+}
+
+#Canvas_Content_Head::before,
+.Canvas_Content_Head::before {
+    position: absolute;
+    z-index: 1;
+    top: 0.65rem;
+    left: clamp(0.8rem, 2vw, 1.6rem);
+    width: 6.4rem;
+    height: 5.55rem;
+    content: "";
+    background: url("images/chisimba-logo.png") center / contain no-repeat;
+}
+
+#Canvas_Content_Head_Header,
+.Canvas_Content_Head_Header,
+#header {
+    position: relative;
+    z-index: 2;
+    min-height: 7.25rem;
+    padding:
+        1.25rem
+        clamp(1rem, 2.5vw, 2rem)
+        1.25rem
+        clamp(8.2rem, 12vw, 10rem);
+}
+
+.sitename,
+.sitename_link,
+#sitename {
+    color: var(--chisimba-text-inverse);
+    font-weight: 750;
+    letter-spacing: 0.015em;
+    text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.28);
+}
+
+.sitename_link:hover,
+.sitename_link:focus-visible {
+    color: var(--chisimba-gold);
+}
+
+#Canvas_Content {
+    width: 100%;
+}
+
+.ChisimbaCanvas {
+    width: 100%;
+    max-width: var(--chisimba-content-max-width);
+    margin-inline: auto;
+    padding: var(--chisimba-layout-gap);
+}
+
+#Canvas_Content_Body {
+    min-width: 0;
+}
+
+.featurebox,
+.contentfeaturebox,
+fieldset,
+table {
+    border-color: var(--chisimba-border);
+}
+
+.featurebox,
+.contentfeaturebox {
+    overflow: hidden;
+    border: 1px solid var(--chisimba-border);
+    border-radius: var(--chisimba-region-radius);
+    background: var(--chisimba-surface);
+    box-shadow: 0 0.2rem 0.7rem rgba(17, 17, 17, 0.07);
+}
+
+.featureboxheader,
+.contentfeaturebox h3,
+.contentfeaturebox h4,
+.contentfeaturebox h5 {
+    margin: 0;
+    padding: 0.7rem 0.9rem;
+    color: var(--chisimba-text-inverse);
+    background: var(--chisimba-blue-deep);
+    border-bottom: 0.2rem solid var(--chisimba-gold);
+}
+
+.featureboxcontent,
+.contentfeaturebox > div {
+    padding: 0.9rem;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+    font: inherit;
+}
+
+input,
+select,
+textarea {
+    border: 1px solid var(--chisimba-border);
+    border-radius: 0.35rem;
+    background: var(--chisimba-surface);
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+.button {
+    padding: 0.55rem 0.9rem;
+    color: var(--chisimba-text-inverse);
+    background: var(--chisimba-blue-deep);
+    border: 0;
+    border-radius: 0.4rem;
+    cursor: pointer;
+}
+
+button:hover,
+button:focus-visible,
+input[type="submit"]:hover,
+input[type="submit"]:focus-visible,
+input[type="button"]:hover,
+input[type="button"]:focus-visible,
+.button:hover,
+.button:focus-visible {
+    background: var(--chisimba-orange);
+}
+
+#Canvas_Content_Footer,
+.Canvas_Content_Footer {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    color: var(--chisimba-text-inverse);
+    background: var(--chisimba-charcoal);
+    border-top: 0.3rem solid var(--chisimba-ochre);
+}
+
+@media (max-width: 48rem) {
+    #Canvas_Content_Head,
+    .Canvas_Content_Head,
+    #Canvas_Content_Head_Header,
+    .Canvas_Content_Head_Header,
+    #header {
+        min-height: 6rem;
+    }
+
+    #Canvas_Content_Head::before,
+    .Canvas_Content_Head::before {
+        top: 0.55rem;
+        left: 0.7rem;
+        width: 5rem;
+        height: 4.4rem;
+    }
+
+    #Canvas_Content_Head_Header,
+    .Canvas_Content_Head_Header,
+    #header {
+        padding-left: 6.3rem;
+    }
+}
+
+/* BEGIN CHISIMBA-REBORN MODERN MENU
+ *
+ * Modern presentation for Chisimba's existing menu markup.
+ * This deliberately preserves the PHP, toolbar and menu-generation architecture.
+ * Design reference: dkeats.com2, interpreted as a cleaner contemporary UI.
+ */
+
+#menu {
+    margin: 0;
+    padding: 0;
+}
+
+ul#menuList {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul#menuList > li {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: transparent;
+    border: 0;
+    font-weight: 600;
+}
+
+ul#menuList > li > a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.45rem;
+    color: var(--chisimba-text);
+    text-decoration: none;
+    line-height: 1.2;
+    transition:
+        background-color 140ms ease,
+        color 140ms ease,
+        box-shadow 140ms ease;
+}
+
+ul#menuList > li > a:hover,
+ul#menuList > li > a:focus-visible {
+    background: var(--chisimba-surface-muted);
+    color: var(--chisimba-primary-hover);
+    outline: none;
+}
+
+ul#menuList > li:hover > a,
+ul#menuList > li:focus-within > a {
+    background: var(--chisimba-surface-muted);
+    color: var(--chisimba-primary-hover);
+}
+
+ul#menuList li ul {
+    position: absolute;
+    z-index: 1000;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    display: none;
+    min-width: 15rem;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    background: var(--chisimba-surface);
+    border: 1px solid var(--chisimba-border);
+    border-radius: 0.55rem;
+    box-shadow: 0 0.7rem 1.8rem rgba(0, 0, 0, 0.14);
+}
+
+ul#menuList li:hover > ul,
+ul#menuList li:focus-within > ul {
+    display: block;
+}
+
+ul#menuList li li {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: transparent;
+    border: 0;
+    font-weight: 400;
+}
+
+ul#menuList li li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 2.35rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.4rem;
+    color: var(--chisimba-ink);
+    text-decoration: none;
+    line-height: 1.25;
+    box-sizing: border-box;
+}
+
+ul#menuList li li a:hover,
+ul#menuList li li a:focus-visible,
+ul#menuList li li:hover > a,
+ul#menuList li li:focus-within > a {
+    background: var(--chisimba-surface-muted);
+    color: var(--chisimba-primary-hover);
+    outline: none;
+}
+
+ul#menuList li li a img {
+    flex: 0 0 auto;
+    margin: 0 0.55rem 0 0;
+    padding: 0;
+    border: 0;
+}
+
+ul#menuList li li a span {
+    display: block;
+    margin: 0;
+}
+
+ul#menuList li li ul {
+    top: -0.4rem;
+    left: calc(100% + 0.35rem);
+}
+
+@media (max-width: 52rem) {
+    ul#menuList {
+        align-items: stretch;
+    }
+
+    ul#menuList > li {
+        flex: 1 1 auto;
+    }
+
+    ul#menuList > li > a {
+        justify-content: center;
+    }
+
+    ul#menuList li ul {
+        right: 0;
+        left: auto;
+    }
+
+    ul#menuList li li ul {
+        position: static;
+        margin-top: 0.25rem;
+        box-shadow: none;
+    }
+}
+
+/* END CHISIMBA-REBORN MODERN MENU */
+
+/* BEGIN CHISIMBA-REBORN MOBILE NAV
+ *
+ * Responsive behaviour for the existing Chisimba toolbar markup.
+ * JavaScript adds only the toggle button and state classes.
+ */
+
+.chisimba-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: 100%;
+    min-height: 2.9rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--chisimba-border);
+    border-radius: 0.45rem;
+    background: var(--chisimba-surface);
+    color: var(--chisimba-ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.chisimba-menu-toggle:hover,
+.chisimba-menu-toggle:focus-visible {
+    background: var(--chisimba-surface-muted);
+    color: var(--chisimba-primary-hover);
+    outline: none;
+}
+
+.chisimba-menu-toggle__icon,
+.chisimba-menu-toggle__icon::before,
+.chisimba-menu-toggle__icon::after {
+    display: block;
+    width: 1.3rem;
+    height: 0.12rem;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.chisimba-menu-toggle__icon {
+    position: relative;
+}
+
+.chisimba-menu-toggle__icon::before,
+.chisimba-menu-toggle__icon::after {
+    position: absolute;
+    left: 0;
+    content: "";
+}
+
+.chisimba-menu-toggle__icon::before {
+    top: -0.4rem;
+}
+
+.chisimba-menu-toggle__icon::after {
+    top: 0.4rem;
+}
+
+@media (max-width: 48rem) {
+    #navigation,
+    #prelogin_nav {
+        width: 100%;
+    }
+
+    .chisimba-menu-toggle {
+        display: flex;
+    }
+
+    ul#menuList {
+        display: none;
+        width: 100%;
+        margin-top: 0.45rem;
+        padding: 0.35rem;
+        background: var(--chisimba-surface);
+        border: 1px solid var(--chisimba-border);
+        border-radius: 0.55rem;
+        box-shadow: 0 0.45rem 1.2rem rgba(0, 0, 0, 0.1);
+    }
+
+    .chisimba-mobile-nav-open ul#menuList {
+        display: block;
+    }
+
+    ul#menuList > li {
+        width: 100%;
+    }
+
+    ul#menuList > li > a {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    ul#menuList li ul,
+    ul#menuList li li ul {
+        position: static;
+        display: block;
+        min-width: 0;
+        width: 100%;
+        margin: 0.2rem 0 0.35rem;
+        padding: 0 0 0 0.85rem;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    ul#menuList li li a {
+        min-height: 2.2rem;
+    }
+}
+
+/* END CHISIMBA-REBORN MOBILE NAV */
+
+/* Chisimba Reborn: compact icon-only mobile navigation control. */
+@media (max-width: 48rem) {
+    .chisimba-menu-toggle {
+        width: 2.9rem;
+        margin-left: auto;
+        padding: 0.7rem;
+    }
+}
+
+/* BEGIN CHISIMBA-REBORN HAMBURGER SVG FIX
+ *
+ * Use an inline SVG so legacy global span and pseudo-element rules cannot
+ * distort the mobile navigation icon.
+ */
+.chisimba-menu-toggle__icon {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    overflow: visible;
+    background: none;
+}
+
+.chisimba-menu-toggle__icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.chisimba-menu-toggle__icon::before,
+.chisimba-menu-toggle__icon::after {
+    content: none;
+    display: none;
+}
+/* END CHISIMBA-REBORN HAMBURGER SVG FIX */
+
+/* BEGIN CHISIMBA-REBORN DROPDOWN USABILITY
+ *
+ * Adds a forgiving pointer corridor between a top-level item and its submenu.
+ * Keyboard focus remains supported through :focus-within.
+ */
+@media (min-width: 48.001rem) {
+    ul#menuList > li {
+        position: relative;
+        padding-bottom: 0.45rem;
+        margin-bottom: -0.45rem;
+    }
+
+    ul#menuList > li > ul {
+        top: calc(100% - 0.05rem);
+    }
+
+    ul#menuList > li:hover > ul,
+    ul#menuList > li:focus-within > ul {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    ul#menuList > li > ul::before {
+        position: absolute;
+        top: -0.55rem;
+        left: 0;
+        width: 100%;
+        height: 0.55rem;
+        content: "";
+    }
+
+    ul#menuList li ul li > a {
+        display: flex;
+        width: 100%;
+        min-height: 2.25rem;
+        align-items: center;
+    }
+}
+/* END CHISIMBA-REBORN DROPDOWN USABILITY */
+
+
+/* BEGIN CHISIMBA-REBORN LEFT MOBILE NAV POSITION
+ *
+ * The hamburger remains in a fixed left-hand cell whether the menu is closed
+ * or open. The expanded menu occupies a separate full-width row.
+ */
+
+@media (max-width: 48rem) {
+    #navigation,
+    #prelogin_nav {
+        align-items: start !important;
+        display: grid !important;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        justify-content: stretch !important;
+        width: 100%;
+    }
+
+    #navigation > .chisimba-menu-toggle,
+    #prelogin_nav > .chisimba-menu-toggle {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+        margin: 0 !important;
+        position: static !important;
+        width: 2.9rem;
+    }
+
+    #navigation > ul#menuList,
+    #prelogin_nav > ul#menuList {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: stretch;
+        margin: 0 !important;
+        text-align: left;
+        width: 100%;
+    }
+
+    #navigation.chisimba-mobile-nav-open > .chisimba-menu-toggle,
+    #prelogin_nav.chisimba-mobile-nav-open > .chisimba-menu-toggle {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+        margin: 0 !important;
+    }
+
+    #navigation.chisimba-mobile-nav-open > ul#menuList,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: stretch;
+        margin: 0 !important;
+        text-align: left;
+    }
+
+    ul#menuList > li,
+    ul#menuList > li > a {
+        text-align: left;
+    }
+}
+
+/* END CHISIMBA-REBORN LEFT MOBILE NAV POSITION */
+
+/* BEGIN CHISIMBA-REBORN FLUSH LEFT MOBILE NAV
+ *
+ * Remove inherited toolbar padding/margins so the hamburger aligns with the
+ * actual left edge of the navigation region.
+ */
+
+@media (max-width: 48rem) {
+    #navigation,
+    #prelogin_nav {
+        box-sizing: border-box;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #navigation > .chisimba-menu-toggle,
+    #prelogin_nav > .chisimba-menu-toggle {
+        left: auto !important;
+        margin-left: 0 !important;
+        padding-left: 0.7rem;
+        transform: none !important;
+    }
+
+    #navigation > ul#menuList,
+    #prelogin_nav > ul#menuList {
+        box-sizing: border-box;
+        padding-left: 0 !important;
+    }
+}
+
+/* END CHISIMBA-REBORN FLUSH LEFT MOBILE NAV */
+
+/* BEGIN CHISIMBA-REBORN FINAL MOBILE NAV CONTRACT
+ *
+ * Final responsive navigation contract:
+ *
+ * - the toggle is pinned independently of menu layout;
+ * - opening the menu cannot move the toggle;
+ * - mobile navigation extends through the canvas horizontal gutter;
+ * - menu content starts on its own row below the toggle.
+ */
+
+@media (max-width: 48rem) {
+    #navigation,
+    #prelogin_nav {
+        box-sizing: border-box !important;
+        display: block !important;
+        min-height: 3rem;
+        position: relative !important;
+
+        /*
+         * .ChisimbaCanvas supplies the standard horizontal page gutter.
+         * Cancel it only for the mobile navigation strip.
+         */
+        margin-left: calc(-1 * var(--chisimba-layout-gap)) !important;
+        margin-right: calc(-1 * var(--chisimba-layout-gap)) !important;
+        padding: 0 !important;
+        width: calc(100% + (2 * var(--chisimba-layout-gap))) !important;
+    }
+
+    #navigation > .chisimba-menu-toggle,
+    #prelogin_nav > .chisimba-menu-toggle {
+        align-items: center !important;
+        display: flex !important;
+        height: 2.9rem;
+        justify-content: center !important;
+
+        left: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: absolute !important;
+        right: auto !important;
+        top: 0 !important;
+        transform: none !important;
+        width: 2.9rem !important;
+        z-index: 20;
+    }
+
+    #navigation > ul#menuList,
+    #prelogin_nav > ul#menuList {
+        box-sizing: border-box !important;
+        clear: both !important;
+        float: none !important;
+        left: auto !important;
+        margin: 0 !important;
+        padding: 3.35rem var(--chisimba-layout-gap) 0 !important;
+        position: static !important;
+        right: auto !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    #navigation:not(.chisimba-mobile-nav-open) > ul#menuList,
+    #prelogin_nav:not(.chisimba-mobile-nav-open) > ul#menuList {
+        display: none !important;
+    }
+
+    #navigation.chisimba-mobile-nav-open > ul#menuList,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList {
+        display: block !important;
+    }
+
+    /*
+     * The state class changes menu visibility only. Reassert the exact same
+     * toggle geometry in both states so there is no movement.
+     */
+    #navigation.chisimba-mobile-nav-open > .chisimba-menu-toggle,
+    #prelogin_nav.chisimba-mobile-nav-open > .chisimba-menu-toggle,
+    #navigation:not(.chisimba-mobile-nav-open) > .chisimba-menu-toggle,
+    #prelogin_nav:not(.chisimba-mobile-nav-open) > .chisimba-menu-toggle {
+        left: 0 !important;
+        margin: 0 !important;
+        position: absolute !important;
+        right: auto !important;
+        top: 0 !important;
+        transform: none !important;
+        width: 2.9rem !important;
+    }
+}
+
+/* END CHISIMBA-REBORN FINAL MOBILE NAV CONTRACT */
+
+/* BEGIN CHISIMBA-REBORN RESPONSIVE NAV FINAL
+ *
+ * Desktop:
+ *   - normal toolbar/menu;
+ *   - no hamburger.
+ *
+ * Narrow screens:
+ *   - hamburger occupies a dedicated top-right grid cell;
+ *   - opened menu occupies a separate full-width second row;
+ *   - no absolute positioning and no overlap with content or links.
+ */
+
+@media (min-width: 48.001rem) {
+    #navigation > .chisimba-menu-toggle,
+    #prelogin_nav > .chisimba-menu-toggle {
+        display: none !important;
+    }
+}
+
+@media (max-width: 48rem) {
+    #navigation,
+    #prelogin_nav {
+        align-items: start !important;
+        box-sizing: border-box !important;
+        display: grid !important;
+        float: none !important;
+        gap: 0 !important;
+        grid-template-columns: minmax(0, 1fr) 3rem;
+        grid-template-rows: 3rem auto;
+        justify-content: stretch !important;
+        margin: 0 !important;
+        min-height: 3rem;
+        padding: 0 !important;
+        position: relative !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    #navigation > .chisimba-menu-toggle,
+    #prelogin_nav > .chisimba-menu-toggle,
+    #navigation.chisimba-mobile-nav-open > .chisimba-menu-toggle,
+    #prelogin_nav.chisimba-mobile-nav-open > .chisimba-menu-toggle {
+        align-items: center !important;
+        align-self: start !important;
+        display: flex !important;
+        float: none !important;
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        height: 3rem !important;
+        justify-content: center !important;
+        justify-self: end !important;
+        left: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        width: 3rem !important;
+        z-index: 2;
+    }
+
+    #navigation > ul#menuList,
+    #prelogin_nav > ul#menuList,
+    #navigation.chisimba-mobile-nav-open > ul#menuList,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList {
+        box-sizing: border-box !important;
+        clear: both !important;
+        float: none !important;
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        justify-self: stretch !important;
+        left: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+        right: auto !important;
+        text-align: left !important;
+        top: auto !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    #navigation:not(.chisimba-mobile-nav-open) > ul#menuList,
+    #prelogin_nav:not(.chisimba-mobile-nav-open) > ul#menuList {
+        display: none !important;
+    }
+
+    #navigation.chisimba-mobile-nav-open > ul#menuList,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList {
+        display: block !important;
+    }
+
+    #navigation.chisimba-mobile-nav-open > ul#menuList > li,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList > li {
+        box-sizing: border-box;
+        display: block;
+        margin: 0;
+        width: 100%;
+    }
+
+    #navigation.chisimba-mobile-nav-open > ul#menuList > li > a,
+    #prelogin_nav.chisimba-mobile-nav-open > ul#menuList > li > a {
+        box-sizing: border-box;
+        display: block;
+        padding-left: var(--chisimba-layout-gap);
+        padding-right: var(--chisimba-layout-gap);
+        text-align: left;
+        width: 100%;
+    }
+}
+
+/* END CHISIMBA-REBORN RESPONSIVE NAV FINAL */
