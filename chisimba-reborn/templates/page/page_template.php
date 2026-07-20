@@ -13,102 +13,6 @@ define("PAGETOP", '<a name="pagetop"></a>');
 define("GOTOTOP", '<a href="#pagetop">Top</a>'); // @todo change this to an icon
 
 
-/* BEGIN CHISIMBA-REBORN LEGACY TOOLBAR FILTER */
-
-/**
- * Remove obsolete toolbar utilities from the modern reference skin.
- *
- * The historical toolbar may render chat and contextual-help links as
- * icon-only anchors. Those facilities are intentionally not exposed by
- * chisimba-reborn:
- *
- * - the old HTML chat is scheduled for replacement by a modern integration;
- * - help will later return as a deliberate, accessible support affordance.
- *
- * Filtering at the skin boundary preserves compatibility for historical skins
- * while preventing obsolete controls from entering this skin's navigation.
- *
- * @param string $toolbarHtml Toolbar fragment produced by the toolbar module.
- *
- * @return string Filtered toolbar fragment.
- */
-function chisimbaRebornFilterLegacyToolbarUtilities($toolbarHtml)
-{
-    if (!is_string($toolbarHtml) || $toolbarHtml === '') {
-        return $toolbarHtml;
-    }
-
-    /*
-     * Inspect one complete anchor at a time. This prevents a match from
-     * starting at one menu item and ending at a later utility icon.
-     */
-    $toolbarHtml = preg_replace_callback(
-        '~<a\b[^>]*>.*?</a>~is',
-        function ($matches) {
-            $anchor = $matches[0];
-            $normalised = strtolower(
-                html_entity_decode(
-                    strip_tags($anchor) . ' ' . $anchor,
-                    ENT_QUOTES | ENT_HTML5,
-                    'UTF-8'
-                )
-            );
-
-            $legacyTokens = array(
-                'module=chat',
-                'module%3dchat',
-                'action=chat',
-                'instantmessage',
-                'instant_message',
-                'instant-message',
-                'instantmessaging',
-                'instant_messaging',
-                'instant-messaging',
-                'jabber',
-                'xmpp',
-                'module=im',
-                'module%3dim',
-                'action=im',
-                '/chat.',
-                '/chat/',
-                '_chat.',
-                '-chat.',
-                '/im.',
-                '/im/',
-                '_im.',
-                '-im.',
-                'help'
-            );
-
-            foreach ($legacyTokens as $token) {
-                if (strpos($normalised, $token) !== false) {
-                    return '';
-                }
-            }
-
-            return $anchor;
-        },
-        $toolbarHtml
-    );
-
-    /*
-     * Remove only individually matched standalone utility images. This rule
-     * cannot span across menu items.
-     */
-    $toolbarHtml = preg_replace(
-        '~<img\b[^>]*(?:'
-        . 'src|alt|title|class'
-        . ')\s*=\s*["\'][^"\']*(?:'
-        . 'chat|instant[-_ ]?messag(?:e|ing)|jabber|xmpp|help'
-        . ')[^"\']*["\'][^>]*>\s*~is',
-        '',
-        $toolbarHtml
-    );
-
-    return $toolbarHtml;
-}
-
-/* END CHISIMBA-REBORN LEGACY TOOLBAR FILTER */
 
 // Get the four banner blocks
 $objModuleCatalogue = $this->getObject('modules', 'modulecatalogue');
@@ -275,12 +179,18 @@ if (!isset($pageSuppressBanner)) {
     }
     echo "</div>\n\n"
     ?>
-    <div class="Canvas_Content_Head">
-        <div class="Canvas_Content_Head_Header" id="header">
-            <?php echo '<a class="sitename_link" href="'.$objConfig->getSiteRoot().'">'; ?>
-            <h1 id="sitename">
+    <header class="Canvas_Content_Head chisimba-site-banner"
+        aria-label="Site banner">
+        <div class="Canvas_Content_Head_Header chisimba-site-banner__inner"
+            id="header">
+            <?php
+            echo '<a class="sitename_link chisimba-site-banner__brand" '
+                . 'href="' . $objConfig->getSiteRoot() . '">';
+            ?>
+            <span class="chisimba-site-banner__identity" aria-hidden="true"></span>
+            <span class="chisimba-site-banner__name" id="sitename">
                 <?php echo $objConfig->getsiteName(); ?>
-            </h1>
+            </span>
             <?php echo '</a>'; ?>
         </div>
         <div class='floathead' id='floathead_content3'><?php echo $banner3; ?></div>
@@ -291,7 +201,7 @@ if (!isset($pageSuppressBanner)) {
 }
 
 if (!isset($pageSuppressBanner)) {
-    echo "</div>";
+    echo "</header>";
     if (!isset($pageSuppressToolbar)) {
         $simulate = $this->getParam('simulate', NULL);
         if (!$this->objUser->isLoggedIn() || ($simulate == 'prelogintoolbar')) {
@@ -299,7 +209,6 @@ if (!isset($pageSuppressBanner)) {
                 echo "\n\n<div id='prelogin_nav'>$plMenu</div>\n\n";
             }
         } else {
-            $toolbar = chisimbaRebornFilterLegacyToolbarUtilities($toolbar);
             echo "\n\n<div id='navigation'>\n\n" . $toolbar . "\n</div>\n\n";
         }
         
@@ -330,15 +239,29 @@ if (!isset($suppressFooter)) {
     } else {
         $footerStr = $objLanguage->languageText("mod_security_poweredby", 'security', 'Powered by ') . ' Chisimba';
     }
-    // Do the rendering here.
+    /*
+     * Render the semantic application footer.
+     *
+     * The session/account string remains framework supplied. The skin adds
+     * stable structure and a separately styled return-to-top action without
+     * changing authentication or language behaviour.
+     */
     echo "<div class='Canvas_Content_Footer_Before'></div>"
-      . "<div class='Canvas_Content_Footer'><div id='footer'>"
-      . $footerStr;
-    // Put in the link to the top of the page
+      . "<footer class='Canvas_Content_Footer chisimba-site-footer'>"
+      . "<div id='footer' class='chisimba-site-footer__inner'>"
+      . "<div class='chisimba-site-footer__status'>"
+      . $footerStr
+      . "</div>";
+
+    // Put in the link to the top of the page.
     if (!isset($pageSuppressBanner)) {
-        echo ' (' . GOTOTOP . ')';
+        echo "<div class='chisimba-site-footer__actions'>"
+          . GOTOTOP
+          . "</div>";
     }
-    echo "</div>\n</div>\n<div class='Canvas_Content_Footer_After'></div>";
+
+    echo "</div>\n</footer>\n"
+      . "<div class='Canvas_Content_Footer_After'></div>";
 }
 // Render the container's closing div if the container is not suppressed
 if (!isset($pageSuppressContainer)) {
